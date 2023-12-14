@@ -9,5 +9,7 @@ router.use(bodyParser.json());
 
 // Route pour créer une nouvelle classe
 router.post('/nouvelle-classe', classController.createClass);
+router.get('/toutes-les-classes', classController.getAllClasses);
+
 
 module.exports = router;
