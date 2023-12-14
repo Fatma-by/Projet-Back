@@ -20,4 +20,6 @@ mongoose
 app.use(express.json());
 app.use("/user", require("./routes/auth.routes"));
 app.use("/auth", checkAuth, require("./routes/private.routes"));
+app.use('/classes', require("./routes/class.routes"));
+
 app.listen(8081, () => console.log("Server is running on port 8081"));
