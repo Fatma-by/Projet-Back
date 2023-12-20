@@ -6,7 +6,6 @@ const app = express();
 require("dotenv").config();
 // importing mongoose module
 const mongoose = require("mongoose");
-const checkAuth = require("./checkAuth");
 // db connection
 mongoose
   .connect(process.env.DB_URL)
@@ -19,8 +18,13 @@ mongoose
 
 app.use(express.json());
 app.use("/user", require("./routes/auth.routes"));
-app.use("/auth", checkAuth, require("./routes/private.routes"));
 app.use('/classes', require("./routes/class.routes"));
 app.use('/allclasses', require('./routes/class.routes'))
+app.use('/student', require('./routes/student.routes'))
+app.use('/Allstudents', require('./routes/student.routes'))
+
+
+
+
 
 app.listen(8081, () => console.log("Server is running on port 8081"));
