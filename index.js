@@ -6,6 +6,7 @@ const app = express();
 require("dotenv").config();
 // importing mongoose module
 const mongoose = require("mongoose");
+const checkAuth = require("./checkAuth");
 // db connection
 mongoose
   .connect(process.env.DB_URL)
@@ -22,6 +23,9 @@ app.use('/classes', require("./routes/class.routes"));
 app.use('/allclasses', require('./routes/class.routes'))
 app.use('/student', require('./routes/student.routes'))
 app.use('/Allstudents', require('./routes/student.routes'))
+
+
+app.get('/checkauth',checkAuth , require('./controllers/private.controller').auth)
 
 
 

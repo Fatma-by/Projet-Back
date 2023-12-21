@@ -19,7 +19,7 @@ const createStudent = async (req, res) => {
 };
 const getAllStudents = async (req, res) => {
     try {
-        console.log(req)
+        console.log(req.query)
       const students = await Student.find({ class: req.query.class });
       console.log(students)
       res.json(students);

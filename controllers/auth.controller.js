@@ -8,6 +8,7 @@ async function register(req, res) {
   try {
     const saltRounds = 10;
     const hashed = bcrypt.hashSync(req.body.password, saltRounds);
+    console.log(req.body.Role.length);
 
     const newUser = new User({
       Nom: req.body.Nom,
@@ -39,26 +40,35 @@ async function login(req, res) {
   try {
     const user = await User.findOne({ email: req.body.email });
 
+    const temp = user.Role.split("");
+    temp.shift();
+    temp.pop();
+    const r = temp.join("");
+
     if (!user) {
-      res.status(404).json({ message: "email not found" });
+      res.status(404).json({ message: "Email not found" });
     } else {
-      console.log(user);
       const match = bcrypt.compareSync(req.body.password, user.password);
 
       if (match) {
-        const exp = Date.now() + 1000 * 15;
+        const oneDayInSeconds = 24 * 60 * 60;
+        const expirationTimestamp = Math.floor(Date.now() / 1000) + 25; // oneDayInSeconds;
+
         const token = jwt.sign(
-          { email: user.email, id: user._id, exp },
-          "hjdbsbdqkjdbqksjdbqkjsdbqksdbqksdbjqsdbjqdsb"
+          { email: user.email, id: user._id, role: r },
+          "hjdbsbdqkjdbqksjdbqkjsdbqksdbqksdbjqsdbjqdsb",
+          { expiresIn: oneDayInSeconds }
         );
 
         res.cookie("access_token", token, {
-          httpOnly: true,
-          maxAge: exp,
+          // httpOnly: true,
+          maxAge: 25 * 1000, // oneDayInSeconds, // Convert to milliseconds
+          path: "/",
+          domain: "localhost", // Removed "http://" from the domain
         });
 
         res.status(200).json({
-          message: "login with success",
+          message: "Login successful",
           data: {
             email: user.email,
             _id: user._id,
@@ -67,15 +77,14 @@ async function login(req, res) {
           },
         });
       } else {
-        res.status(401).json({ message: "unauthorized" });
+        res.status(401).json({ message: "Unauthorized" });
       }
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
     res.status(500).json({ message: error.message });
   }
 }
-
 module.exports = {
   register,
   login,
