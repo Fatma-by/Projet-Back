@@ -9,7 +9,7 @@ const createStudent = async (req, res) => {
     res.status(201).json({
         NomStudent: data.NomStudent,
         PrenomStudent: data.PrenomStudent,
-        Code: data.Code,
+        AdressMail: data.AdressMail,
       _id: data._id,
     });
     console.log(newStudent);

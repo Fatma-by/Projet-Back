@@ -7,5 +7,7 @@ router.post('/login', authController.login);
 
 // Utilisez la fonction register du contrôleur pour gérer la route POST /register
 router.post('/register', authController.register);
+router.post('/logout', authController.logout);
+
 
 module.exports = router;

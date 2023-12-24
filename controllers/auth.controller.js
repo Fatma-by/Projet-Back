@@ -62,7 +62,7 @@ async function login(req, res) {
 
         res.cookie("access_token", token, {
           // httpOnly: true,
-          maxAge: 25 * 1000, // oneDayInSeconds, // Convert to milliseconds
+          maxAge: 86400, // oneDayInSeconds, // Convert to milliseconds
           path: "/",
           domain: "localhost", // Removed "http://" from the domain
         });
@@ -85,7 +85,25 @@ async function login(req, res) {
     res.status(500).json({ message: error.message });
   }
 }
+
+
+async function logout (req, res)  {
+  try {
+    // Clear the cookie containing the access token
+    res.clearCookie("access_token", { path: "/" });
+
+    // Optionally, you can add additional logic here,
+    // such as invalidating the token server-side if needed.
+
+    res.status(200).json({ message: "Logout successful" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: error.message });
+  }
+}
+
 module.exports = {
   register,
   login,
+logout,
 };
