@@ -29,6 +29,7 @@ async function register(req, res) {
       _id: data._id,
     });
   } catch (error) {
+    console.log("here", error)
     if (error.code === 11000)
       res.status(400).json({ message: "user already exists" });
     else res.status(500).json({ message: error.message });
@@ -86,8 +87,7 @@ async function login(req, res) {
   }
 }
 
-
-async function logout (req, res)  {
+async function logout(req, res) {
   try {
     // Clear the cookie containing the access token
     res.clearCookie("access_token", { path: "/" });
@@ -105,5 +105,5 @@ async function logout (req, res)  {
 module.exports = {
   register,
   login,
-logout,
+  logout,
 };

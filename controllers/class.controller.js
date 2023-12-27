@@ -2,10 +2,10 @@ const Class = require("../models/class.schema");
 
 const createClass = async (req, res) => {
   try {
-    console.log(req.body)
+    console.log(req.body);
     const nouvelleClasse = new Class(req.body);
     const data = await nouvelleClasse.save();
-    console.log(data)
+    console.log(data);
     res.status(201).json({
       NomClass: data.NomClass,
       Niveau: data.Niveau,
@@ -14,7 +14,13 @@ const createClass = async (req, res) => {
     });
     console.log(nouvelleClasse);
   } catch (error) {
-    res.status(500).json({ error: error.message });
+    console.error(error);
+    if ( error.code === 11000) {
+      // Le code 11000 correspond à une contrainte unique violée dans MongoDB
+      res.status(400).json({ message: 'Classe déjà existante avec ce nom.' });
+    } else {
+      res.status(500).json({ error: error.message });
+    }
   }
 };
 
