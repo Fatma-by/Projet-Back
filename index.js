@@ -1,4 +1,6 @@
 // importing express module
+const bodyParser = require('body-parser')
+
 const express = require("express");
 // creating express instance
 const app = express();
@@ -17,18 +19,19 @@ mongoose
     console.log(err);
   });
 
-app.use(express.json());
+app.use(express.json({ limit: '50mb' }));
+app.use(bodyParser.raw())
 app.use("/user", require("./routes/auth.routes"));
-app.use('/classes', require("./routes/class.routes"));
-app.use('/allclasses', require('./routes/class.routes'))
-app.use('/student', require('./routes/student.routes'))
-app.use('/Allstudents', require('./routes/student.routes'))
+app.use("/classes", require("./routes/class.routes"));
+app.use("/allclasses", require("./routes/class.routes"));
+app.use("/student", require("./routes/student.routes"));
+app.use("/Allstudents", require("./routes/student.routes"));
+app.use("/api", require("./routes/cloudinary.routes"));
 
-
-app.get('/checkauth',checkAuth , require('./controllers/private.controller').auth)
-
-
-
-
+app.get(
+  "/checkauth",
+  checkAuth,
+  require("./controllers/private.controller").auth
+);
 
 app.listen(8081, () => console.log("Server is running on port 8081"));
