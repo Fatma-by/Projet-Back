@@ -26,6 +26,7 @@ const createClass = async (req, res) => {
 
 const getAllClasses = async (req, res) => {
   try {
+    console.log(req.query.user);
 
     const classes = await Class.find({user:req.query.user});
     res.json(classes);

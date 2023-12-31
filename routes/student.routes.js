@@ -11,4 +11,5 @@ router.use(bodyParser.json());
 router.post('/nouvelle-student', studentController.createStudent);
 router.get('/Allstudent', studentController.getAllStudents);
 
+
 module.exports = router;
