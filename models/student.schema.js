@@ -1,12 +1,12 @@
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
-const User  = require('./auth.schema');
+const Class  = require('./class.schema');
 
 const studentSchema = new mongoose.Schema({
   NomStudent: { type: String, required: true },
   PrenomStudent: { type: String, required: true },
   AdressMail: { type: String, required: true, unique: true },
-  user: { type: String }
+  class: { type: String }
  
 });
 

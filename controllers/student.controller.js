@@ -26,7 +26,7 @@ const createStudent = async (req, res) => {
 };
 const getAllStudents = async (req, res) => {
   try {
-    const students = await Student.find({ user: req.query.user });
+    const students = await Student.find({ class: req.query.classState });
 
     console.log("students", students);
     res.json(students);
