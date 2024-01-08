@@ -1,5 +1,5 @@
 // importing express module
-const bodyParser = require('body-parser')
+const bodyParser = require("body-parser");
 
 const express = require("express");
 // creating express instance
@@ -19,8 +19,10 @@ mongoose
     console.log(err);
   });
 
-app.use(express.json({ limit: '50mb' }));
-app.use(bodyParser.raw())
+app.use(express.json({ limit: "50mb" }));
+app.use(bodyParser.raw());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use("/user", require("./routes/auth.routes"));
 app.use("/classes", require("./routes/class.routes"));
 app.use("/allclasses", require("./routes/class.routes"));

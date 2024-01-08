@@ -1,13 +1,16 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const resourceSchema = new mongoose.Schema({
-    NomEnseignat : {type: String, required: true },
-    Niveau : {type: String, required: true },
-    Matiere: {type: String, required: true },
-    Document:{ type: String, required: true},
-    Trimestre:{ type: String, required: true},
-
-    
-  });
-
-module.exports =  mongoose.model('Resource', resourceSchema);
+  NomEnseignant: { type: String, required: true },
+  Niveau: { type: String, required: true },
+  Matiere: { type: String, required: true },
+  Document: {
+    url: {
+      type: String,
+    },
+    public_id: String,
+  },
+  Trimestre: { type: String, required: true },
+});
+const Resource = mongoose.model("Resource", resourceSchema);
+module.exports = Resource;
