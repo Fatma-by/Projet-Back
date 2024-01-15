@@ -9,57 +9,31 @@ cloudinary.config({
   api_key: process.env.CLOUD_KEY,
   api_secret: process.env.CLOUD_SECRET,
 });
-//  async (req, res) => {
-//   try {
-//     console.log(req.body);
 
-//     res.status(201).json();
-//     console.log(nouvelleRessource);
-//   } catch (error) {
-//     console.error(error);
-//     if (error.code === 11000) {
-//       // Le code 11000 correspond à une contrainte unique violée dans MongoDB
-//       res
-//         .status(400)
-//         .json({ message: "Classe déjà existante avec ce nom." });
-//     } else {
-//       res.status(500).json({ error: error.message });
-//     }
-//   }
-// };
 
-module.exports = createRessource = async (req, res) => {
+const createRessource = async (req, res) => {
   try {
-    console.log(req.headers.name);
+    console.log(req.headers);
     const { file } = req.body;
-    let response = {
-      public_id: "",
-      url: "",
-    };
+   
     new Promise((resolve, reject) => {
       cloudinary.uploader.upload(file, async (error, result) => {
         if (result && result.secure_url) {
-          console.log(result.public_id);
-          response.public_id=result.public_id
-          response.url = result.secure_url
-          // const nouvelleRessource =
-          // {
-          //   NomEnseignant: req.body.NomEnseignant,
-          //   Niveau: req.body.Niveau,
-          //   Matiere: req.body.Matiere,
-          //   Document:{
-          //     url : result.secure_url,
-          //     public_id : result.public_id
-          //   },
-          //   Trimestre:req.body.Trimestre,
-
-          // }
-          // const save  = await Resource.create(nouvelleRessource)
-          // console.log(save)
-          res.status(201).json({
-            url: result.secure_url,
-            public_id:result.public_id
-          });
+;
+         
+            const newRessource = await Resource.create({
+              NomEnseignant : req.headers.name,
+              Niveau : req.headers.selectedniveau,
+              Matiere : req.headers.selectedmatiere,
+              Nature :req.headers.selectednature,
+              Document : {
+                url : result.secure_url,
+                public_id : result.public_id
+              },
+              Trimestre : req.headers.selectedtrimestre
+  
+            })
+          res.status(201).json({});
 
           return resolve(result.secure_url);
         }
@@ -68,9 +42,40 @@ module.exports = createRessource = async (req, res) => {
       });
     });
 
-    // Vous n'avez pas besoin d'une connexion directe à la base de données ici
   } catch (err) {
     console.log(err.message);
     res.status(500).json({ message: "error" });
   }
 };
+
+const getRessources = async (req, res) => {
+  try {
+    const data = req.body
+    console.log(data)
+    let query = {}
+    switch (data.code) {
+      case "'s/2/d/1'":
+        query = {
+          Nature: "Devoir",
+          Matiere: "Science",
+          Niveau: "Deuxième Année",
+          Trimestre: "Première Trimèstre",
+        }
+        
+        break;
+    
+      default:
+        break;
+    }
+    const Ressources= await Resource.find(query)
+    res.status(200).json({Ressources: Ressources});
+  } catch (error) {
+    console.error(error.message);
+    res.status(500).json({ message: 'Erreur lors de la récupération des devoirs' });
+  }
+};
+
+module.exports = {
+  createRessource,
+  getRessources
+}

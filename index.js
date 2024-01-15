@@ -19,8 +19,7 @@ mongoose
     console.log(err);
   });
 
-app.use(express.json({ limit: "50mb" }));
-app.use(bodyParser.raw());
+app.use(bodyParser.json({ limit: '10mb' }));
 app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use("/user", require("./routes/auth.routes"));
@@ -29,6 +28,10 @@ app.use("/allclasses", require("./routes/class.routes"));
 app.use("/student", require("./routes/student.routes"));
 app.use("/Allstudents", require("./routes/student.routes"));
 app.use("/api", require("./routes/cloudinary.routes"));
+app.use("/Devoir", require("./routes/cloudinary.routes"));
+app.use("/Ressources", require("./routes/cloudinary.routes"));
+
+
 
 app.get(
   "/checkauth",
